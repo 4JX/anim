@@ -3,7 +3,7 @@
 #![allow(unused_variables)]
 
 // use parsers::gogo::Gogo;
-use parsers::{common::AnimeSource, gogo::Gogo};
+use parsers::{anime::AnimeParser, gogo::Gogo};
 use reqwest_impersonate::browser::ChromeVersion;
 mod parsers;
 
@@ -13,8 +13,12 @@ fn main() {
         .build()
         .unwrap();
 
-    let shows = Gogo::new().search_anime(&client_imp, "JoJo no Kimyou na Bouken (1993)");
+    let gogo = Gogo::new();
+    let shows = gogo.search_anime(&client_imp, "JoJo no Kimyou na Bouken (1993)");
 
+    if !shows.is_empty() {
+        dbg!(gogo.load_episodes(&client_imp, &shows[0]));
+    }
     // for show in shows {
     //     dbg!(show);
     // }

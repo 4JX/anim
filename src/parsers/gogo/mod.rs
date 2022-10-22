@@ -3,7 +3,8 @@ use reqwest_impersonate::{blocking::Client, Url};
 use self::anime::GogoAnime;
 
 use super::{
-    common::{AnimeSource, SearchResult},
+    anime::{AnimeParser, Episode},
+    common::SearchResult,
     ExternalFile,
 };
 
@@ -21,11 +22,16 @@ impl Gogo {
     }
 }
 
-impl AnimeSource for Gogo {
+impl AnimeParser for Gogo {
     type AnimeSearchResult = GogoSearchResult;
 
     fn search_anime(&self, client: &Client, query: &str) -> Vec<Self::AnimeSearchResult> {
         self.anime.search(client, query)
+    }
+
+    fn load_episodes(&self, client: &Client, result: &Self::AnimeSearchResult) -> Vec<Episode> {
+        let link = result.link();
+        self.anime.load_episodes(client, link)
     }
 }
 

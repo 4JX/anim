@@ -1,8 +1,10 @@
 use reqwest_impersonate::{header::HeaderMap, Url};
 
-pub mod common;
+pub mod anime;
+mod common;
 pub mod gogo;
 mod select;
+mod video;
 
 /// Represents a file hosted on a website
 #[derive(Debug)]
