@@ -3,19 +3,10 @@ use reqwest_impersonate::{header::HeaderMap, Url};
 pub mod gogo;
 mod select;
 
-/// A search result containing information about a show
-#[derive(Debug)]
-pub struct SearchResult {
-    name: String,
-    link: String,
-    cover: ExternalFile,
-}
-
-impl SearchResult {
-    pub fn new(name: String, link: String, cover: impl Into<ExternalFile>) -> Self {
-        let cover = cover.into();
-        Self { name, link, cover }
-    }
+trait SearchResult {
+    fn title(&self) -> &str;
+    fn link(&self) -> &Url;
+    fn cover(&self) -> &ExternalFile;
 }
 
 /// Represents a file hosted on a website

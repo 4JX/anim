@@ -1,11 +1,36 @@
+use reqwest_impersonate::Url;
+
 use self::anime::GogoAnime;
 
-use super::SearchResult;
+use super::{ExternalFile, SearchResult};
 
-mod anime;
+pub mod anime;
 
-pub struct Gogo {
-    anime: GogoAnime,
+#[derive(Debug)]
+pub struct GogoSearchResult {
+    title: String,
+    link: Url,
+    cover: ExternalFile,
 }
 
-pub struct GogoShowResponse(SearchResult);
+impl GogoSearchResult {
+    pub fn new(title: String, link: String, cover: impl Into<ExternalFile>) -> Self {
+        let link = Url::parse(&link).unwrap();
+        let cover = cover.into();
+        Self { title, link, cover }
+    }
+}
+
+impl SearchResult for GogoSearchResult {
+    fn title(&self) -> &str {
+        &self.title
+    }
+
+    fn link(&self) -> &Url {
+        &self.link
+    }
+
+    fn cover(&self) -> &ExternalFile {
+        &self.cover
+    }
+}

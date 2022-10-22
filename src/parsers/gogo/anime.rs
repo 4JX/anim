@@ -1,9 +1,11 @@
 use reqwest_impersonate::{blocking::Client, Url};
 use scraper::{Html, Selector};
 
-use crate::parsers::{select, SearchResult};
+use crate::parsers::select;
 
-pub(super) struct GogoAnime {
+use super::GogoSearchResult;
+
+pub struct GogoAnime {
     host: Url,
 }
 
@@ -14,7 +16,7 @@ impl GogoAnime {
         }
     }
 
-    pub fn search(&self, client: &Client, query: &str) -> Vec<SearchResult> {
+    pub fn search(&self, client: &Client, query: &str) -> Vec<GogoSearchResult> {
         let mut search_url = self.host.clone();
         search_url.set_path("/search.html");
         search_url.set_query(Some(&format! {"keyword={query}"}));
@@ -33,7 +35,7 @@ impl GogoAnime {
                 let link = e.attr("href").unwrap().to_string();
                 let mut img_select = element_ref.select(&select::IMG);
                 let img_url = img_select.next().unwrap().value().attr("src").unwrap();
-                SearchResult::new(title, link, img_url)
+                GogoSearchResult::new(title, link, img_url)
             })
             .collect()
     }
