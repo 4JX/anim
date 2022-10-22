@@ -3,7 +3,7 @@
 #![allow(unused_variables)]
 
 // use parsers::gogo::Gogo;
-use parsers::gogo::anime::GogoAnime;
+use parsers::{common::AnimeSource, gogo::Gogo};
 use reqwest_impersonate::browser::ChromeVersion;
 mod parsers;
 
@@ -13,8 +13,7 @@ fn main() {
         .build()
         .unwrap();
 
-    let shows = GogoAnime::new("https://gogoanime.sk")
-        .search(&client_imp, "JoJo no Kimyou na Bouken (1993)");
+    let shows = Gogo::new().search_anime(&client_imp, "JoJo no Kimyou na Bouken (1993)");
 
     // for show in shows {
     //     dbg!(show);

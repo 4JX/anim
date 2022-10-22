@@ -1,10 +1,33 @@
-use reqwest_impersonate::Url;
+use reqwest_impersonate::{blocking::Client, Url};
 
 use self::anime::GogoAnime;
 
-use super::{common::SearchResult, ExternalFile};
+use super::{
+    common::{AnimeSource, SearchResult},
+    ExternalFile,
+};
 
-pub mod anime;
+mod anime;
+
+pub struct Gogo {
+    anime: GogoAnime,
+}
+
+impl Gogo {
+    pub fn new() -> Self {
+        Self {
+            anime: GogoAnime::new("https://gogoanime.sk"),
+        }
+    }
+}
+
+impl AnimeSource for Gogo {
+    type AnimeSearchResult = GogoSearchResult;
+
+    fn search_anime(&self, client: &Client, query: &str) -> Vec<Self::AnimeSearchResult> {
+        self.anime.search(client, query)
+    }
+}
 
 #[derive(Debug)]
 pub struct GogoSearchResult {
@@ -14,8 +37,7 @@ pub struct GogoSearchResult {
 }
 
 impl GogoSearchResult {
-    pub fn new(title: String, link: String, cover: impl Into<ExternalFile>) -> Self {
-        let link = Url::parse(&link).unwrap();
+    pub fn new(title: String, link: Url, cover: impl Into<ExternalFile>) -> Self {
         let cover = cover.into();
         Self { title, link, cover }
     }

@@ -29,12 +29,17 @@ impl GogoAnime {
 
         selected
             .map(|element_ref| {
-                dbg!(&element_ref.html());
                 let e = element_ref.value();
+
                 let title = e.attr("title").unwrap().to_string();
-                let link = e.attr("href").unwrap().to_string();
+
+                let link_path = e.attr("href").unwrap().to_string();
+                let mut link = self.host.clone();
+                link.set_path(&link_path);
+
                 let mut img_select = element_ref.select(&select::IMG);
                 let img_url = img_select.next().unwrap().value().attr("src").unwrap();
+
                 GogoSearchResult::new(title, link, img_url)
             })
             .collect()

@@ -1,6 +1,6 @@
 use reqwest_impersonate::{header::HeaderMap, Url};
 
-mod common;
+pub mod common;
 pub mod gogo;
 mod select;
 
