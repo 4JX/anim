@@ -1,13 +1,8 @@
 use reqwest_impersonate::{header::HeaderMap, Url};
 
+mod common;
 pub mod gogo;
 mod select;
-
-trait SearchResult {
-    fn title(&self) -> &str;
-    fn link(&self) -> &Url;
-    fn cover(&self) -> &ExternalFile;
-}
 
 /// Represents a file hosted on a website
 #[derive(Debug)]

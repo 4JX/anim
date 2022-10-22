@@ -2,7 +2,7 @@ use reqwest_impersonate::Url;
 
 use self::anime::GogoAnime;
 
-use super::{ExternalFile, SearchResult};
+use super::{common::SearchResult, ExternalFile};
 
 pub mod anime;
 
